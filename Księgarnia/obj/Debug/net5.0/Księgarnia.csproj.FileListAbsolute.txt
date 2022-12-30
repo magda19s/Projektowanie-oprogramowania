@@ -143,3 +143,8 @@ C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\refint\
 C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Księgarnia.pdb
 C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Księgarnia.genruntimeconfig.cache
 C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\ref\Księgarnia.dll
+C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Articles\Create.cshtml.g.cs
+C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Articles\Delete.cshtml.g.cs
+C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Articles\Details.cshtml.g.cs
+C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Articles\Edit.cshtml.g.cs
+C:\Users\ms200\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Articles\Index.cshtml.g.cs
