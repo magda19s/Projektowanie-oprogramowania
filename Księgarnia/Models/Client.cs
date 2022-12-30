@@ -13,8 +13,7 @@ namespace Księgarnia.Models
         public string Password { get; set; }
         public int Points { get; set; }
         public double Discount { get; set; }
-        public Address Address { get; set; }
-        public int AddressId { get; set; }
+        
 
         public ICollection<Order> Orders { get; set; }
     }
