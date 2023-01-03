@@ -4,18 +4,20 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
+<strong>@Html.DisplayFor(model => model.Name)</strong>
+<img src="@Url.Content(Model.FilePath)" asp-append-version="true" width="400" height="450" id="hp" />
 <div>
-    <h4>Article</h4>
+    <p>
+        @if (Model.CategoryId == 1)
+        {
+            @Html.DisplayFor(model => model.Author)
+        } 
+    </p>
     <hr />
+    
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
@@ -28,45 +30,35 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Amount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Amount)
-        </dd>
-        <dt class = "col-sm-2">
+        
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Detail)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Detail)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Publisher)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Producer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Producer)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FilePath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FilePath)
-        </dd>
+        @if (Model.CategoryId == 1)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Publisher)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Publisher)
+            </dd>
+        } else {
+        
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Producer)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Producer)
+            </dd>
+        }
+        
+        
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+
