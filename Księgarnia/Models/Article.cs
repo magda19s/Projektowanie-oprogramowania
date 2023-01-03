@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Księgarnia.Models
 {
@@ -9,6 +10,7 @@ namespace Księgarnia.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:0.00} zł")]
         public double Price { get; set; }
 
         public Category Category { get; set; }

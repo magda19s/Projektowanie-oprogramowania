@@ -9,53 +9,57 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                    <dd class="col-sm-10">
-                        <img src="@Url.Content(item.FilePath)" asp-append-version="true" width="50" />
-                    </dd>
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container-fluid px-0">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fixed">
+        <div class="container-fluid d-flex"> <a class="navbar-brand" href="#">SiteBack</a>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation"> <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Couches</a> </li>
+                <li class="nav-item" role="presentation"> <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Chair</a> </li>
+                <li class="nav-item" role="presentation"> <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Dining</a> </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid mt-2 mb-5">
+    <div class="products">
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="row g-3">
+                @foreach(var item in Model)
+                {
+                    <div class="col-md-4">
+                            <div class="card">
+                                 <img src="@Url.Content(item.FilePath)" asp-append-version="true" width="50" height="250" class="card-img-top">
+                            <div class="card-body">
+                                    <div class="d-flex justify-content-between"> <span class="font-weight-bold"> @Html.DisplayFor(modelItem => item.Name)</span> </div>
+                                
+                                    <div class="d-flex align-items-center flex-row">  <span class="guarantee">  @Html.DisplayFor(modelItem => item.Author)  </span> </div>
+                                    <div class="d-flex justify-content-between"> <span class="font-weight-bold">@Html.DisplayFor(modelItem => item.Price) zł</span> </div>
+
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                    <div>
+                                        <input type="button" class="btn btn-outline-dark" value="Details" name="back"
+                                     onclick="@("location.href='" 
+                                   + Url.Action("Details", "Articles")  
+                                   + "'")" />
+                                    <input type="button" class="btn btn-outline-dark" value="Favourites" name="back"
+                                           onclick="@("location.href='"
+                                   + Url.Action("Index", "Favourties")
+                                   + "'")" />
+                                    <input type="button" class="btn btn-outline-dark" value="Add to cart" name="back"
+                                           onclick="@("location.href='"
+                                   + Url.Action("Index", "Articles")
+                                   + "'")" />
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
