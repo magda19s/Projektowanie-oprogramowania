@@ -19,8 +19,46 @@ namespace Księgarnia.Controllers
             _context = context;
         }
 
+        [Route("Articles/GetCategory/{id}")]
+        public IActionResult GetCategory(int id)
+        {
+
+            var articles = _context.Articles
+            .Where(a => a.Category.Id == id)
+             .Select(a =>
+                 new Article()
+                 {
+                     Id = a.Id,
+                     Name = a.Name,
+                     Price = a.Price,
+                     CategoryId = a.CategoryId,
+                     FilePath = a.FilePath,
+                     Amount = a.Amount,
+                     Detail = a.Detail,
+                     Publisher = a.Publisher,
+                     Author = a.Author,
+                     Producer = a.Producer
+                 }
+                 )
+             .ToList();
+
+            
+
+
+
+            return View("Views/Articles/Index.cshtml", articles);
+
+
+        }
+
         // GET: Articles
         public async Task<IActionResult> Index()
+        {
+            var myDbContext = _context.Articles.Include(a => a.Category);
+            return View(await myDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> IndexBooks()
         {
             var myDbContext = _context.Articles.Include(a => a.Category);
             return View(await myDbContext.ToListAsync());
