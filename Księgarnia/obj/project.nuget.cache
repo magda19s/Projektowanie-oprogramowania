@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "7XeMtt1gSrCg8Eo9gbZ3ennm6bWez3NS8DrE/MYsOV/hgv5BQNgx6/4EMZrwXvNiiXltzNOYKUv5MDHJjOLSow==",
+  "dgSpecHash": "n5FULqKBq98IxH6MQ6b0RGlISihveboeLu/xQpjJBJRz8FUMESXrvHjy+doVZqtvkMfjaFK7m/AJYihv0YP4qA==",
   "success": true,
   "projectFilePath": "C:\\Users\\karol\\PO-imp\\Projektowanie-oprogramowania\\Księgarnia\\Księgarnia.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\karol\\.nuget\\packages\\bootstrap\\5.2.3\\bootstrap.5.2.3.nupkg.sha512",
     "C:\\Users\\karol\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\karol\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\karol\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
