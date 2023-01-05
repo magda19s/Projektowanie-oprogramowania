@@ -29,9 +29,7 @@ namespace Księgarnia
             services.AddDbContextPool<MyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MyDb")));
             services.AddControllersWithViews();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                     .AddRoles<IdentityRole>()
-                     .AddEntityFrameworkStores<MyDbContext>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +63,6 @@ namespace Księgarnia
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }
