@@ -1,4 +1,5 @@
 using Księgarnia.Data;
+using Księgarnia.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,9 +30,17 @@ namespace Księgarnia
             services.AddDbContextPool<MyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("MyDb")));
             services.AddControllersWithViews();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                     .AddRoles<IdentityRole>()
-                     .AddEntityFrameworkStores<MyDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            //.AddRoles<IdentityRole>()
+            //.AddEntityFrameworkStores<MyDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<MyDbContext>()
+            .AddDefaultUI()
+            .AddDefaultTokenProviders();
+           // services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<MyDbContext>();
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
