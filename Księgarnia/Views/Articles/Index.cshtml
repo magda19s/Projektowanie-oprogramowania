@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Index";
 }
+<p style="font-size:20px;color: @ViewData["col"];text-align:center">
+    @ViewData["fav"]
+</p>
+<p style="font-size:20px;color: red;text-align:center">
+    @ViewData["b"]
+</p>
 
 @if(ViewBag.koszykInfo == 1) {
     <h4 style="font-size:20px;color:green;text-align:center">Added to cart</h4>
