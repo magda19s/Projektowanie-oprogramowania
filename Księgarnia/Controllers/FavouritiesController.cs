@@ -23,7 +23,8 @@ namespace Księgarnia.Controllers
         // GET: Favourities
         public async Task<IActionResult> Index()
         {
-            var myDbContext = _context.Favourities.Include(f => f.Article).Include(f => f.Client);
+            int client = (int)HttpContext.Session.GetInt32("client");
+            var myDbContext = _context.Favourities.Include(f => f.Article).Include(f => client);
             return View(await myDbContext.ToListAsync());
         }
 
@@ -84,20 +85,23 @@ namespace Księgarnia.Controllers
         public async Task<IActionResult> AddToFavourite(int ArticleId)
         {
             int client = (int)HttpContext.Session.GetInt32("client");
+            var ifInFav = _context.Favourities.Select(e => e.ArticleId == ArticleId);
             
-            if (ModelState.IsValid)
-            {
-                Favourities fav = new Favourities
+                if (ModelState.IsValid)
                 {
-                    ArticleId = ArticleId,
-                    ClientId = client
-                };
-                _context.Add(fav);
-                await _context.SaveChangesAsync();
-               ;
-            }
+                    Favourities fav = new Favourities
+                    {
+                        ArticleId = ArticleId,
+                        ClientId = client
+                    };
+                    _context.Add(fav);
+                    await _context.SaveChangesAsync();
+                    ViewBag.dodano = "Produkt został dodany do ulubionych.";
+                }
+            
+            
 
-            return View("Views/Articles/Index.cshtml");
+            return View("Views/Favourities/FavouritesResult.cshtml");
         }
         // GET: Favourities/Edit/5
         public async Task<IActionResult> Edit(int? id)
