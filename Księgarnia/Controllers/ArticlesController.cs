@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Księgarnia.Data;
 using Księgarnia.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace Księgarnia.Controllers
 {
@@ -55,10 +54,6 @@ namespace Księgarnia.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            ViewData["fav"] = HttpContext.Session.GetString("addF");
-            ViewData["favCol"] = HttpContext.Session.GetString("color");
-            HttpContext.Session.SetString("addF", "");
-            HttpContext.Session.SetString("color", "");
             var myDbContext = _context.Articles.Include(a => a.Category);
             return View(await myDbContext.ToListAsync());
         }

@@ -5,9 +5,6 @@
 }
 
 
-<div style="font-size:20px;color:@ViewData["FavCol"];text-align:center">
-    @ViewData["Fav"]
-</div>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -22,14 +19,12 @@
         </div>
     </nav>
 </div>
-
 <div class="container-fluid mt-2 mb-5">
     <div class="products">
         <div class="tab-content" id="myTabContent">
 
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="row g-3">
-                <a asp-action="Index"></a>
                 @foreach(var item in Model)
                 {
                     <div class="col-md-4">
