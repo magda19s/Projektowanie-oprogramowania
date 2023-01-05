@@ -46,7 +46,7 @@
                                    + "'")" />
                                     <input type="button" class="btn btn-outline-dark" value="Favourites" name="back"
                                            onclick="@("location.href='"
-                                   + Url.Action("Index", "Favourities")
+                                   + Url.Action("AddToFavourite", "Favourities",  new { id = item.Id })
                                    + "'")" />
                                     <input type="button" class="btn btn-outline-dark" value="Add to cart" name="back"
                                            onclick="@("location.href='"

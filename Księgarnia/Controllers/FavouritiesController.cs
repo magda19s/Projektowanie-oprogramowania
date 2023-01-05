@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Księgarnia.Data;
 using Księgarnia.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Księgarnia.Controllers
 {
@@ -59,21 +60,45 @@ namespace Księgarnia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClientId,ArticleId")] Favourities favourities)
+        public async Task<IActionResult> Create([Bind("Id,ArticleId")] Favourities favourities)
         {
-            
+
+            int client = (int)HttpContext.Session.GetInt32("client");
             if (ModelState.IsValid)
             {
-
-                _context.Add(favourities);
+                Favourities fav = new Favourities
+                {
+                    Id = favourities.Id,
+                    ArticleId = favourities.ArticleId,
+                    ClientId = client
+                };
+                _context.Add(fav);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArticleId"] = new SelectList(_context.Articles, "Id", "Id", favourities.ArticleId);
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Id", favourities.ClientId);
+     
             return View(favourities);
         }
 
+        [Route("Favourities/AddToFavourite/{ArticleId}")]
+        public async Task<IActionResult> AddToFavourite(int ArticleId)
+        {
+            int client = (int)HttpContext.Session.GetInt32("client");
+            
+            if (ModelState.IsValid)
+            {
+                Favourities fav = new Favourities
+                {
+                    ArticleId = ArticleId,
+                    ClientId = client
+                };
+                _context.Add(fav);
+                await _context.SaveChangesAsync();
+               ;
+            }
+
+            return View("Views/Articles/Index.cshtml");
+        }
         // GET: Favourities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

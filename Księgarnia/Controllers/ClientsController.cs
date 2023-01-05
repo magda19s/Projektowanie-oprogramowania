@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Księgarnia.Data;
 using Księgarnia.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Księgarnia.Controllers
 {
@@ -60,28 +61,38 @@ namespace Księgarnia.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
-                ViewBag.zalogowano = "Poprawnie zarejestrowano!";
+                ViewBag.register = "Poprawnie zarejestrowano!";
             } else
             {
-                ViewBag.niezalogowano = "Podałeś nieprawidłowe dane!";
+                ViewBag.noregister = "Podałeś nieprawidłowe dane!";
 
             }
             return View(client);
         }
 
+        // GET: Clients/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Id,Login,Password")] Client client)
         {
-            if (ModelState.IsValid)
+
+           var cl = await _context.Clients
+                .FirstOrDefaultAsync(m => m.Login == client.Login);
+            if (cl ==  null || cl.Password != client.Password )
             {
-                _context.Add(client);
-                await _context.SaveChangesAsync();
-                ViewBag.zalogowano = "Poprawnie zalogowano!";
+                ViewBag.niezalogowano = "Podałeś nieprawidłowe dane!";
             }
             else
             {
-                ViewBag.niezalogowano = "Podałeś nieprawidłowe dane!";
-
+                HttpContext.Session.SetInt32("client", cl.Id);
+                ViewBag.zalogowano = "Poprawnie zalogowano!";
             }
+           
             return View(client);
         }
 
