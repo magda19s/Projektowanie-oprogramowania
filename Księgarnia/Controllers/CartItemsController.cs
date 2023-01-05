@@ -26,6 +26,10 @@ namespace Księgarnia.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("client") == null)
+            {
+                return View("Views/Favourities/FavouritesResult.cshtml");
+            }
             var cookies = Request.Cookies.Keys;
             if (cookies.Count == 0)
             {
@@ -49,19 +53,25 @@ namespace Księgarnia.Controllers
                     else
                     {
                         Category category = _context.Categories.Where(a => a.Id == article.CategoryId).FirstOrDefault();
+                        article.Amount = article.Amount - amount;
                         CartItem productsCart = new CartItem()
                         {
                             Id = article.Id,
                             Article = article,
                             Category = category,
                             TotalPrice = Math.Round(amount * article.Price, 4),
-                            Amount = amount
+                            Amount = amount,
                         };
                         products.Add(productsCart);
+                        if (article.Amount == 0)
+                        {
+                            HttpContext.Session.SetString("brak", "This product is not available");
+                        }
                     }
                 }
 
             }
+            
 
 
             return View(products);
@@ -92,6 +102,7 @@ namespace Księgarnia.Controllers
                     else
                     {
                         Category category = _context.Categories.Where(a => a.Id == article.CategoryId).FirstOrDefault();
+                        article.Amount = article.Amount - amount;
                         CartItem productsCart = new CartItem()
                         {
                             Id = article.Id,
@@ -150,6 +161,10 @@ namespace Księgarnia.Controllers
 
         public IActionResult BuyArticle(int id)
         {
+            if (HttpContext.Session.GetInt32("client") == null)
+            {
+                return View("Views/Favourities/FavouritesResult.cshtml");
+            }
             string idOfIthem = id.ToString();
             string defaultVal = "1";
             string myAmount = Request.Cookies[idOfIthem];

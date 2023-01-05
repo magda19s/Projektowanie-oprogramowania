@@ -57,6 +57,12 @@ namespace Księgarnia.Controllers
         {
             ViewBag.koszykInfo = HttpContext.Session.GetInt32("cartItem");
             HttpContext.Session.SetInt32("cartItem", 0);
+            ViewData["fav"] = HttpContext.Session.GetString("addF");
+            ViewData["col"] = HttpContext.Session.GetString("color");
+            ViewData["b"] = HttpContext.Session.GetString("brak");
+
+            HttpContext.Session.SetString("addF", "");
+            HttpContext.Session.SetString("color", "");
             var myDbContext = _context.Articles.Include(a => a.Category);
             return View(await myDbContext.ToListAsync());
         }
@@ -81,6 +87,10 @@ namespace Księgarnia.Controllers
             if (article == null)
             {
                 return NotFound();
+            }
+            if (HttpContext.Session.GetInt32("client") == null)
+            {
+                return View("Views/Favourities/FavouritesResult.cshtml");
             }
 
             return View(article);

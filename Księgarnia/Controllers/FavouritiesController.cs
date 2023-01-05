@@ -23,8 +23,12 @@ namespace Księgarnia.Controllers
         // GET: Favourities
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetInt32("client") == null)
+            {
+                return View("Views/Favourities/FavouritesResult.cshtml");
+            }
             int client = (int)HttpContext.Session.GetInt32("client");
-            var myDbContext = _context.Favourities.Include(f => f.Article).Include(f => client);
+            var myDbContext = _context.Favourities.Include(f => f.Article).Where(f => f.ClientId == client);
             return View(await myDbContext.ToListAsync());
         }
 
@@ -84,9 +88,16 @@ namespace Księgarnia.Controllers
         [Route("Favourities/AddToFavourite/{ArticleId}")]
         public async Task<IActionResult> AddToFavourite(int ArticleId)
         {
+            if (HttpContext.Session.GetInt32("client") == null)
+            {
+                return View("Views/Favourities/FavouritesResult.cshtml");
+            }
             int client = (int)HttpContext.Session.GetInt32("client");
-            var ifInFav = _context.Favourities.Select(e => e.ArticleId == ArticleId);
-            
+            var favr = _context.Favourities.Select(e => e).Where(e => e.ArticleId == ArticleId)
+                .Where(e => e.ClientId == client).ToList();
+
+            if (favr.Count == 0)
+            {
                 if (ModelState.IsValid)
                 {
                     Favourities fav = new Favourities
@@ -96,12 +107,20 @@ namespace Księgarnia.Controllers
                     };
                     _context.Add(fav);
                     await _context.SaveChangesAsync();
-                    ViewBag.dodano = "Produkt został dodany do ulubionych.";
+                    string dodano = "Produkt został dodany do ulubionych.";
+                    HttpContext.Session.SetString("addF", dodano);
+                    HttpContext.Session.SetString("color", "green");
                 }
-            
-            
+            }
+            else
+            {
+                string niedodano = "Produkt znajduje się już w ulubionych.";
+                HttpContext.Session.SetString("addF", niedodano);
+                HttpContext.Session.SetString("color", "red");
+            }
 
-            return View("Views/Favourities/FavouritesResult.cshtml");
+
+            return RedirectToAction("Index", "Articles");
         }
         // GET: Favourities/Edit/5
         public async Task<IActionResult> Edit(int? id)
