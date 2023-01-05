@@ -22,12 +22,6 @@ namespace Księgarnia.Controllers
         // GET: Favourities
         public async Task<IActionResult> Index()
         {
-            var user = User.Identity.Name;
-            ViewBag.User = user;
-            if (user == null)
-            {
-                return View();
-            } 
             var myDbContext = _context.Favourities.Include(f => f.Article).Include(f => f.Client);
             return View(await myDbContext.ToListAsync());
         }
