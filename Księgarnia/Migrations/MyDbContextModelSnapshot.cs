@@ -93,7 +93,7 @@ namespace Księgarnia.Migrations
                             Amount = 50,
                             CategoryId = 2,
                             Detail = "Blue color pen.",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/bic.jpg",
                             Name = "Pen",
                             Price = 1.5600000000000001,
                             Producer = "Bic"
@@ -104,7 +104,7 @@ namespace Księgarnia.Migrations
                             Amount = 50,
                             CategoryId = 2,
                             Detail = "White rubber",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/rubb.jpg",
                             Name = "Rubber",
                             Price = 2.2200000000000002,
                             Producer = "Bic"
@@ -115,7 +115,7 @@ namespace Księgarnia.Migrations
                             Amount = 40,
                             CategoryId = 2,
                             Detail = "Colorful papers",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/pap.jpg",
                             Name = "Colorful papers",
                             Price = 10.220000000000001,
                             Producer = "Bic"
@@ -126,7 +126,7 @@ namespace Księgarnia.Migrations
                             Amount = 34,
                             CategoryId = 2,
                             Detail = "Christmas cards to make your close ones feel special.",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/kartka.jpg",
                             Name = "Christmas cards",
                             Price = 10.99,
                             Producer = "MyCards"
@@ -174,7 +174,7 @@ namespace Księgarnia.Migrations
                             Author = "Nicolas Sparks",
                             CategoryId = 1,
                             Detail = "A story about family, first loves and second chances.Ronnie was forced to spend the summer at her father's house in an isolated seaside town in North Carolina. For a rebellious girl, it's a hard test: used to the hustle and bustle of the big city and its nightclubs,she has to leave everything behind and face her father,whom she still feels sorry for after he left his family.Will this be Ronnie's worst vacation yet? Or will she meet someone who will change her life for good...?.",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/thelask.jpg",
                             Name = "The last song",
                             Price = 31.07,
                             Publisher = "Albartos"
@@ -186,7 +186,7 @@ namespace Księgarnia.Migrations
                             Author = "J.K. Rowling",
                             CategoryId = 1,
                             Detail = "What if the world of magic and spells really exists? Is it right next to us? Join the young wizard Harry Potter in an amazing alternate reality where anything is possible. Immerse yourself in the first book in the Harry Potter and the Philosopher's Stone series by J.K. Rowling.",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/harry.jpg",
                             Name = "Harry Potter and the philosopher's stone",
                             Price = 21.5,
                             Publisher = "Media Rodzina"
@@ -198,7 +198,7 @@ namespace Księgarnia.Migrations
                             Author = "Meyer Stephenie",
                             CategoryId = 1,
                             Detail = "Incredibly gripping story that keeps the reader in suspense until the very end. Its heroine, seventeen-year-old Isabella Swan, moves to a gloomy town in rainy Washington state and meets the mysterious, handsome Edward Cullen. The boy has superhuman abilities - he is irresistible, but also impossible to figure out. The girl tries to learn his dark secrets, but she does not realize that she is putting herself and her loved ones at risk. It turns out that she fell in love with a vampire...",
-                            FilePath = "/images/noPhoto.jpg",
+                            FilePath = "/images/tw.jpg",
                             Name = "Twilight",
                             Price = 39.899999999999999,
                             Publisher = "Dolnośląskie"
@@ -235,16 +235,31 @@ namespace Księgarnia.Migrations
 
             modelBuilder.Entity("Księgarnia.Models.Client", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
@@ -252,18 +267,53 @@ namespace Księgarnia.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Points")
                         .HasColumnType("int");
 
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SurName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("idC")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Księgarnia.Models.Complaint", b =>
@@ -413,11 +463,14 @@ namespace Księgarnia.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClientId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId1");
 
                     b.ToTable("Favourities");
                 });
@@ -431,6 +484,9 @@ namespace Księgarnia.Migrations
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ClientId1")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("DeliveryId")
                         .HasColumnType("int");
@@ -452,7 +508,7 @@ namespace Księgarnia.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId1");
 
                     b.HasIndex("DeliveryId");
 
@@ -599,71 +655,6 @@ namespace Księgarnia.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -806,9 +797,7 @@ namespace Księgarnia.Migrations
 
                     b.HasOne("Księgarnia.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId1");
 
                     b.Navigation("Article");
 
@@ -819,9 +808,7 @@ namespace Księgarnia.Migrations
                 {
                     b.HasOne("Księgarnia.Models.Client", "Client")
                         .WithMany("Orders")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId1");
 
                     b.HasOne("Księgarnia.Models.Delivery", "Delivery")
                         .WithMany()
@@ -891,7 +878,7 @@ namespace Księgarnia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Księgarnia.Models.Client", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -900,7 +887,7 @@ namespace Księgarnia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Księgarnia.Models.Client", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -915,7 +902,7 @@ namespace Księgarnia.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Księgarnia.Models.Client", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -924,7 +911,7 @@ namespace Księgarnia.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Księgarnia.Models.Client", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

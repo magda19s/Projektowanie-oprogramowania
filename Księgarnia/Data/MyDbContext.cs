@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Księgarnia.Data
 {
-    public class MyDbContext: IdentityDbContext
+    public class MyDbContext: IdentityDbContext<Client>
     {
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
