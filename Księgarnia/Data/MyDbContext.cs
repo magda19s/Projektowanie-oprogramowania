@@ -34,5 +34,7 @@ namespace Księgarnia.Data
             modelBuilder.Seed();
 
         }
+
+        public DbSet<Księgarnia.Models.CartItem> CartItem { get; set; }
     }
 }

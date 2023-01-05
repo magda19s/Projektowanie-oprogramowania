@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Księgarnia.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    double total = 0;
+}
+
+<a asp-action="Index2"></a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article.Name)
+            </th>
+            <th>
+
+                @Html.DisplayNameFor(model => model.Article.Author)/
+                @Html.DisplayNameFor(model => model.Article.Producer)
+
+            </th>
+            <th></th>
+
+            <th>
+                <center>@Html.DisplayNameFor(model => model.Amount)</center>
+            </th>
+            <th></th>
+            <th>
+                <center>Total Price</center>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.Article.FilePath)" asp-append-version="true" width="50" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Article.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Article.Author)
+                        @Html.DisplayFor(modelItem => item.Article.Producer)
+
+                    </td>
+
+                    <td>
+                    <a asp-action="Increase" asp-route-id="@item.Id">+</a>
+                    </td>
+                    <td>
+                        <center>@Html.DisplayFor(modelItem => item.Amount)</center>
+                    </td>
+                    <td>
+                    <a asp-action="Decrease" asp-route-id="@item.Id">-</a> 
+                    </td>
+                    <td>
+                        <center>@Html.DisplayFor(modelItem => item.TotalPrice)</center>
+                        @{
+                            total = total + item.TotalPrice;
+                        }
+                    </td>
+                    <td>
+                        
+                        
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+@{
+    total = Math.Round(total, 4);
+}
+
+<h3 class="start"><center>Total @total</center></h3>
+<div>
+    <a asp-action="Index"><center>Back to cart</center></a>
+</div>

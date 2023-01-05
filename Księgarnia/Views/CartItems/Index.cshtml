@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Księgarnia.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    double total = 0;
+}
+
+<p style="font-size:30px" class="info">
+    @TempData["Message"]
+</p>
+
+@if (Model == null)
+{
+    <p style="font-size:30px" class="warning">
+        Your cart is empty!
+    </p>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article.Name)
+            </th>
+            <th>
+            
+                @Html.DisplayNameFor(model => model.Article.Author)/
+                @Html.DisplayNameFor(model => model.Article.Producer)
+            
+            </th>
+            
+
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPrice)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Content(item.Article.FilePath)" asp-append-version="true" width="50" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Article.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Article.Author)
+                        @Html.DisplayFor(modelItem => item.Article.Producer)
+
+                    </td>
+                    
+                    
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                        @{
+                            total = total + item.TotalPrice;
+                        }
+                    </td>
+                    
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+
+
+@{
+    total = Math.Round(total, 4);
+}
+
+<h3 class="start">Total @total</h3>
+
+<div>
+    <input type="button" class="btn btn-outline-dark" value="Edit" name="back"
+           onclick="@("location.href='"
+                                   + Url.Action("Index2", "CartItems")
+                                   + "'")" />
+    <input type="button" class="btn btn-outline-dark" value="Order" name="back"
+           onclick="@("location.href='"
+                                   + Url.Action("AddToFavourite", "Favourities")
+                                   + "'")" />
+</div>
