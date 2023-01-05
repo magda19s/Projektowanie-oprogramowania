@@ -533,3 +533,4 @@ C:\Users\ms200\Projektowanie-oprogramowania\Projektowanie-oprogramowania\Księga
 C:\Users\ms200\Projektowanie-oprogramowania\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Księgarnia.genruntimeconfig.cache
 C:\Users\ms200\Projektowanie-oprogramowania\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\ref\Księgarnia.dll
 C:\Users\ms200\Projektowanie-oprogramowania\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Favourities\FavouritesResult.cshtml.g.cs
+C:\Users\karol\PO-imp\Projektowanie-oprogramowania\Księgarnia\obj\Debug\net5.0\Razor\Views\Favourities\FavouritesResult.cshtml.g.cs
