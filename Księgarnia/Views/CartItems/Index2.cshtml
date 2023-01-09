@@ -55,13 +55,14 @@
                     </td>
 
                     <td>
-                    <a asp-action="Increase" asp-route-id="@item.Id">+</a>
+                        <a asp-action="Decrease" asp-route-id="@item.Id">-</a>
                     </td>
                     <td>
                         <center>@Html.DisplayFor(modelItem => item.Amount)</center>
                     </td>
+                    
                     <td>
-                    <a asp-action="Decrease" asp-route-id="@item.Id">-</a> 
+                        <a asp-action="Increase" asp-route-id="@item.Id">+</a>
                     </td>
                     <td>
                         <center>@Html.DisplayFor(modelItem => item.TotalPrice)</center>

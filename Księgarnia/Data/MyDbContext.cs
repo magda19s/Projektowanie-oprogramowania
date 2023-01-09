@@ -22,6 +22,8 @@ namespace Księgarnia.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<DocumentKind> DocumentKinds { get; set; }
 
+        public DbSet<ParcelLocker> ParcelLockers { get; set; }
+
         public DbSet<Favourities> Favourities { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }

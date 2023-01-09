@@ -26,10 +26,10 @@ namespace Księgarnia.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetInt32("client") == null)
-            {
-                return View("Views/Favourities/FavouritesResult.cshtml");
-            }
+            //if (HttpContext.Session.GetInt32("client") == null)
+            //{
+              //  return View("Views/Favourities/FavouritesResult.cshtml");
+            //}
             var cookies = Request.Cookies.Keys;
             if (cookies.Count == 0)
             {
@@ -53,6 +53,7 @@ namespace Księgarnia.Controllers
                     else
                     {
                         Category category = _context.Categories.Where(a => a.Id == article.CategoryId).FirstOrDefault();
+                        ViewBag.liczba = article.Amount - amount;
                         article.Amount = article.Amount - amount;
                         CartItem productsCart = new CartItem()
                         {
@@ -63,10 +64,7 @@ namespace Księgarnia.Controllers
                             Amount = amount,
                         };
                         products.Add(productsCart);
-                        if (article.Amount == 0)
-                        {
-                            HttpContext.Session.SetString("brak", "This product is not available");
-                        }
+                        
                     }
                 }
 
@@ -168,16 +166,39 @@ namespace Księgarnia.Controllers
             string idOfIthem = id.ToString();
             string defaultVal = "1";
             string myAmount = Request.Cookies[idOfIthem];
-            if (myAmount == null || myAmount == " ")
+            Article article = _context.Articles.Where(a => a.Id == id).FirstOrDefault();
+            int myValue = 0;
+            if (myAmount != null)
             {
-                Response.Cookies.Append(id.ToString(), defaultVal, options);
+                myValue = Int32.Parse(myAmount) + 1;
             }
             else
             {
+                myValue = 1;
+            }
+
+            if (article.Amount - myValue < 0)
+            {
+                HttpContext.Session.SetString("brak", "This product is not available");
+                HttpContext.Session.SetInt32("cartItem", 0);
+
+            }
+            else
+            if (myAmount == null || myAmount == " ")
+            {
+                Response.Cookies.Append(id.ToString(), defaultVal, options);
+                HttpContext.Session.SetInt32("cartItem", 1);
+                HttpContext.Session.SetString("brak", " ");
+
+
+            }
+            else
+            {
+                HttpContext.Session.SetInt32("cartItem", 1);
+                HttpContext.Session.SetString("brak", " ");
                 int value = Int32.Parse(myAmount) + 1;
                 Save(id, value);
             }
-            HttpContext.Session.SetInt32("cartItem", 1);
             return RedirectToAction("Index", "Articles");
         }
 

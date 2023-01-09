@@ -10,5 +10,7 @@
         public string RegionId { get; set; }
         public int HouseNumber { get; set; }
         public int FlatNumber { get; set; }
+
+       
     }
 }
