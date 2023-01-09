@@ -82,11 +82,11 @@ namespace Księgarnia.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Login = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<double>(type: "float", nullable: false)
                 },
@@ -119,6 +119,22 @@ namespace Księgarnia.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Methods", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ParcelLockers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NumberStreet = table.Column<int>(type: "int", nullable: false),
+                    idRegion = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParcelLockers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -297,7 +313,7 @@ namespace Księgarnia.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdParcelLocker = table.Column<int>(type: "int", nullable: false),
+                    ParcelLockerId = table.Column<int>(type: "int", nullable: false),
                     DeliveryMethodId = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -314,6 +330,12 @@ namespace Księgarnia.Migrations
                         name: "FK_Deliveries_Methods_DeliveryMethodId",
                         column: x => x.DeliveryMethodId,
                         principalTable: "Methods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_ParcelLockers_ParcelLockerId",
+                        column: x => x.ParcelLockerId,
+                        principalTable: "ParcelLockers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -336,6 +358,34 @@ namespace Księgarnia.Migrations
                         principalTable: "PaymentMethods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArticleId = table.Column<int>(type: "int", nullable: true),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartItem_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CartItem_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -484,6 +534,18 @@ namespace Księgarnia.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ParcelLockers",
+                columns: new[] { "Id", "City", "NumberStreet", "Street", "idRegion" },
+                values: new object[,]
+                {
+                    { 1, "Wrocław", 10, "ul. Wyszyńskiego", "50-323" },
+                    { 2, "Wrocław", 31, "ul. Główna", "50-423" },
+                    { 3, "Wrocław", 61, "ul. Pszenna", "50-423" },
+                    { 4, "Wrocław", 101, "ul. Tęczowa", "50-733" },
+                    { 5, "Wrocław", 61, "ul. Orzeszkowej", "50-423" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "PaymentMethods",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -502,13 +564,13 @@ namespace Księgarnia.Migrations
                     { 5, 15, "George Orwell", 1, "Dystopian social science fiction novel and cautionary tale by English writer George Orwell. It was published on 8 June 1949 by Secker & Warburg as Orwell's ninth and final book completed in his lifetime. Thematically, it centres on the consequences of totalitarianism, mass surveillance and repressive regimentation of people and behaviours within society.", "/images/rok.jpg", "1984", 39.990000000000002, null, "Secker & Warburg" },
                     { 6, 16, "Fyodor Dostoevsky", 1, "Set in 19th-century Russia, The Brothers Karamazov is a passionate philosophical novel that enters deeply into questions of God, free will, and morality. It is a theological drama dealing with problems of faith, doubt, and reason in the context of a modernizing Russia, with a plot that revolves around the subject of patricide.", "/images/bro.jpg", "THE KARAMAZOV BROTHERS", 51.990000000000002, null, "The Russian Messenger" },
                     { 7, 24, "Richard Holliss, Brian Sibley", 1, "The fairy tale features such elements as the magic mirror, the poisoned apple, the glass coffin, and the characters of the Evil Queen and the seven Dwarfs. ", "/images/snow.jpg", "Snow White", 15.99, null, "Egmont" },
-                    { 8, 25, "Nicolas Sparks", 1, "A story about family, first loves and second chances.Ronnie was forced to spend the summer at her father's house in an isolated seaside town in North Carolina. For a rebellious girl, it's a hard test: used to the hustle and bustle of the big city and its nightclubs,she has to leave everything behind and face her father,whom she still feels sorry for after he left his family.Will this be Ronnie's worst vacation yet? Or will she meet someone who will change her life for good...?.", "/images/noPhoto.jpg", "The last song", 31.07, null, "Albartos" },
-                    { 9, 33, "J.K. Rowling", 1, "What if the world of magic and spells really exists? Is it right next to us? Join the young wizard Harry Potter in an amazing alternate reality where anything is possible. Immerse yourself in the first book in the Harry Potter and the Philosopher's Stone series by J.K. Rowling.", "/images/noPhoto.jpg", "Harry Potter and the philosopher's stone", 21.5, null, "Media Rodzina" },
-                    { 10, 35, "Meyer Stephenie", 1, "Incredibly gripping story that keeps the reader in suspense until the very end. Its heroine, seventeen-year-old Isabella Swan, moves to a gloomy town in rainy Washington state and meets the mysterious, handsome Edward Cullen. The boy has superhuman abilities - he is irresistible, but also impossible to figure out. The girl tries to learn his dark secrets, but she does not realize that she is putting herself and her loved ones at risk. It turns out that she fell in love with a vampire...", "/images/noPhoto.jpg", "Twilight", 39.899999999999999, null, "Dolnośląskie" },
-                    { 1, 50, null, 2, "Blue color pen.", "/images/noPhoto.jpg", "Pen", 1.5600000000000001, "Bic", null },
-                    { 2, 50, null, 2, "White rubber", "/images/noPhoto.jpg", "Rubber", 2.2200000000000002, "Bic", null },
-                    { 3, 40, null, 2, "Colorful papers", "/images/noPhoto.jpg", "Colorful papers", 10.220000000000001, "Bic", null },
-                    { 4, 34, null, 2, "Christmas cards to make your close ones feel special.", "/images/noPhoto.jpg", "Christmas cards", 10.99, "MyCards", null }
+                    { 8, 25, "Nicolas Sparks", 1, "A story about family, first loves and second chances.Ronnie was forced to spend the summer at her father's house in an isolated seaside town in North Carolina. For a rebellious girl, it's a hard test: used to the hustle and bustle of the big city and its nightclubs,she has to leave everything behind and face her father,whom she still feels sorry for after he left his family.Will this be Ronnie's worst vacation yet? Or will she meet someone who will change her life for good...?.", "/images/thelask.jpg", "The last song", 31.07, null, "Albartos" },
+                    { 9, 33, "J.K. Rowling", 1, "What if the world of magic and spells really exists? Is it right next to us? Join the young wizard Harry Potter in an amazing alternate reality where anything is possible. Immerse yourself in the first book in the Harry Potter and the Philosopher's Stone series by J.K. Rowling.", "/images/harry.jpg", "Harry Potter and the philosopher's stone", 21.5, null, "Media Rodzina" },
+                    { 10, 35, "Meyer Stephenie", 1, "Incredibly gripping story that keeps the reader in suspense until the very end. Its heroine, seventeen-year-old Isabella Swan, moves to a gloomy town in rainy Washington state and meets the mysterious, handsome Edward Cullen. The boy has superhuman abilities - he is irresistible, but also impossible to figure out. The girl tries to learn his dark secrets, but she does not realize that she is putting herself and her loved ones at risk. It turns out that she fell in love with a vampire...", "/images/tw.jpg", "Twilight", 39.899999999999999, null, "Dolnośląskie" },
+                    { 1, 50, null, 2, "Blue color pen.", "/images/bic.jpg", "Pen", 1.5600000000000001, "Bic", null },
+                    { 2, 50, null, 2, "White rubber", "/images/rubb.jpg", "Rubber", 2.2200000000000002, "Bic", null },
+                    { 3, 40, null, 2, "Colorful papers", "/images/pap.jpg", "Colorful papers", 10.220000000000001, "Bic", null },
+                    { 4, 34, null, 2, "Christmas cards to make your close ones feel special.", "/images/kartka.jpg", "Christmas cards", 10.99, "MyCards", null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -556,6 +618,16 @@ namespace Księgarnia.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CartItem_ArticleId",
+                table: "CartItem",
+                column: "ArticleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItem_CategoryId",
+                table: "CartItem",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Complaints_OrderId",
                 table: "Complaints",
                 column: "OrderId");
@@ -569,6 +641,11 @@ namespace Księgarnia.Migrations
                 name: "IX_Deliveries_DeliveryMethodId",
                 table: "Deliveries",
                 column: "DeliveryMethodId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_ParcelLockerId",
+                table: "Deliveries",
+                column: "ParcelLockerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_DocumentKindId",
@@ -639,6 +716,9 @@ namespace Księgarnia.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CartItem");
+
+            migrationBuilder.DropTable(
                 name: "Complaints");
 
             migrationBuilder.DropTable(
@@ -679,6 +759,9 @@ namespace Księgarnia.Migrations
 
             migrationBuilder.DropTable(
                 name: "Methods");
+
+            migrationBuilder.DropTable(
+                name: "ParcelLockers");
 
             migrationBuilder.DropTable(
                 name: "DocumentKinds");

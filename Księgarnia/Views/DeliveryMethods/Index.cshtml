@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Księgarnia.Models.DeliveryMethod>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="float-right">
+<input type="button" class="btn btn-outline-dark" value="Back" name="back" 
+       onclick="@("location.href='"
+                                   + Url.Action("Index", "CartItems")
+                                   + "'")" />
+       
+</div>
+<br />
+<br />
+<div class="float-none">
+<p></p>
+    <h1 style=" font-size:40px;color:black;text-align:center;background:orange" ><center>Formularz zamówienia</center></h1>
+<p></p>
+    </br>
+
+<h3><center>Wybierz sposób dostawy</center></h3>
+</div>
+<p></p>
+</br>
+<center>
+<div>
+    <input type="button" class="btn btn-outline-dark" value="Kurier" name="back" style="width:100px"
+           onclick="@("location.href='"
+                                   + Url.Action("Index2", "CartItems", new { id = 2})
+                                   + "'")" /> </br>
+           <p></p>
+        <input type="button" class="btn btn-outline-dark" value="Paczkomat" name="back" style="width:100px"
+           onclick="@("location.href='"
+                                   + Url.Action("Create", "Deliveries", new { id = 1})
+                                   + "'")" />
+</div>
+</center>

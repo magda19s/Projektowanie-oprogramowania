@@ -227,6 +227,40 @@ namespace Księgarnia.Data
                }
 
                );
+
+            modelBuilder.Entity<ParcelLocker>().HasData(
+               new ParcelLocker()
+               {
+                   Id = 1,
+                   Address = "ul. Wyszyńskiego 10 50-323 Wrocław",
+                   
+
+               },
+               new ParcelLocker()
+               {
+                   Id = 2,
+                   Address = "ul. Główna 30 50-323 Wrocław",
+
+               },
+               new ParcelLocker()
+               {
+                   Id = 3,
+                   Address = "ul. Orzeszkowej 61 50-453 Wrocław",
+
+               },
+               new ParcelLocker()
+               {
+                   Id = 4,
+                   Address = "ul. Pszenna 20 50-323 Wrocław",
+
+               }, new ParcelLocker()
+               {
+                   Id = 5,
+                   Address = "ul.Tęczowa 11 50-323 Wrocław",
+
+               }
+
+               );
         }
     }
 }

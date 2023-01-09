@@ -60,6 +60,7 @@ namespace Księgarnia.Controllers
             ViewData["fav"] = HttpContext.Session.GetString("addF");
             ViewData["col"] = HttpContext.Session.GetString("color");
             ViewData["b"] = HttpContext.Session.GetString("brak");
+            HttpContext.Session.SetString("brak", " ");
 
             HttpContext.Session.SetString("addF", "");
             HttpContext.Session.SetString("color", "");
